@@ -1,0 +1,181 @@
+<app-loading *ngIf="this.showLoadingSpinner"></app-loading>
+
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content" id="main-content">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Profile Utilisateur</h5>
+        </div>
+        <div class="card-body">
+          <form #editForm = "ngForm">
+            <div class="row">
+              <div class="col-md-5 pr-1">
+                <div class="form-group">
+                  <label>Company (disabled)</label>
+                  <input type="text" class="form-control" disabled="" placeholder="Company" value="Isoqualtech sarl.">
+                </div>
+              </div>
+              <div class="col-md-3 px-1">
+                <div class="form-group">
+                  <label>Username</label>
+                  <input ngModel = "{{userPrincipal?.username}}" name="username" type="text" class="form-control" placeholder="Username">
+                </div>
+              </div>
+              <div class="col-md-4 pl-1">
+                <div class="form-group">
+                  <label for="email">addresse Email</label>
+                  <input  id="email" ngModel = "{{userPrincipal?.email}}" name="email" type="email" class="form-control" placeholder="email">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label>Prénom</label>
+                  <input type="text" class="form-control" ngModel = "{{userPrincipal?.firstName}}" name="firstName" placeholder="Prénom" >
+                </div>
+              </div>
+              <div class="col-md-6 pl-1">
+                <div class="form-group">
+                  <label>Nom</label>
+                  <input type="text" class="form-control" ngModel = "{{userPrincipal?.lastName}}" name="lastName" placeholder="Nom" >
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Address</label>
+                  <input type="text" class="form-control" placeholder="Home Address" value="Sect 5 imm 35 appt 9 hayssalam, salé,">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4 pr-1">
+                <div class="form-group">
+                  <label>Ville</label>
+                  <input type="text" class="form-control" placeholder="City" value="Salé">
+                </div>
+              </div>
+              <div class="col-md-4 px-1">
+                <div class="form-group">
+                  <label>Pays</label>
+                  <input type="text" class="form-control" placeholder="Country" value="Maroc">
+                </div>
+              </div>
+              <div class="col-md-4 pl-1">
+                <div class="form-group">
+                  <label>Code Postal</label>
+                  <input type="number" class="form-control" placeholder="ZIP Code">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>à Propos</label>
+                  <textarea rows="4" cols="80" class="form-control" ngModel = "{{userPrincipal?.description}}" name="description" placeholder="placer votre bio ici!"></textarea>
+                </div>
+                <div class="form-group">
+                  <label>changer la photo de profile</label>
+
+                <input type="hidden" class="form-control" id="imageUrl" ngModel = "{{userPrincipal?.profileImageUrl}}" name="profileImageUrl" value="blabla">
+              </div>
+              <input type="file" class="form-control" id="formFile" (change) = "selectFile($event)">
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="image">
+          <img src="../assets/img/bg5.jpg" alt="...">
+        </div>
+        <div class="card-body">
+          <div class="author">
+            <a href="#">
+              <img *ngIf="userPrincipal?.profileImageUrl" class="avatar border-gray" id="profilePic" src={{userPrincipal?.profileImageUrl}} alt="...">
+              <h5 class="title">{{userPrincipal?.username}}</h5>
+            </a>
+            <p class="description">
+              {{userPrincipal?.firstName}} {{userPrincipal?.lastName}}
+            </p>
+          </div>
+          <p class="description text-center">
+            {{userPrincipal?.description}}
+          </p>
+        </div>
+        <hr>
+        <div class="button-container">
+
+          <button id="editbtn"  (click)="onOpenModal(user,'profile')" class="btn btn-info btn-lg">
+            <i class="fab fa-twitter"></i>Modifier profile
+          </button>
+
+          <button id="editbtn"  (click)="onOpenModal(null,'password')" class="btn btn-warning btn-sm-lg">
+            <i class="fab fa-twitter"></i>Changer le mot de Passe
+          </button>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Edit-Profile-Modal -->
+<div class="modal fade" id="editProfileModal" role="dialog" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Alerte : Modification de votre profile</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Voulez-vous appliquer les modification apporter a votre profile ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="annuler-Edit" class="btn btn-secondary" data-bs-dismiss="modal">Non!</button>
+        <button type="button" id="submit-Edit" class="btn btn-danger" (click)="onEditUser(editForm.value)">Oui!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit-Password-Modal -->
+<div class="modal fade" id="editPasswordModal" data-bs-backdrop="static" data-bs-keyboard="true" role="dialog"  tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modifier le mot de passe</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form [formGroup]="this.pswForm" (ngSubmit)="onChangePassword()">
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="currentPsw">Mot de passe actuel</label>
+            <input type="password" id="currentPsw" class="form-control" placeholder="Mot de passe actuel" name="currentPsw" formControlName="currentPsw" required>
+          </div>
+          <div class="form-group">
+            <label for="newPassword">Nouveau Mot de passe</label>
+            <input type="password" id="newPassword" class="form-control" placeholder="Nouveau Mot de passe" name="newPassword" formControlName="newPassword" required>
+          </div>
+          <div class="form-group">
+            <label for="rePassword">Resaisir votre nouveau Mot de passe</label>
+            <input type="password" class="form-control" id="rePassword" placeholder="Re:Mot de Passe" name="rePassword" formControlName="rePassword" required>
+          </div>
+        </div>
+      <div class="modal-footer">
+        <button type="button" id="annuler-psw" (click)="this.pswForm.reset()" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button  type="submit" id="submit-psw" class="btn btn-primary">Ajouter</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+</div>
+

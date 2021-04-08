@@ -1,0 +1,220 @@
+<app-loading *ngIf="this.showLoadingSpinner"></app-loading>
+
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content" id="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div *ngIf="role==='ROLE_ADMIN'" class="card">
+        <div class="card-header">
+          <h4 class="card-title"> Table des Utilisateurs</h4>
+          <button class="btn btn-primary" (click)="onOpenModal(null, 'add')">Ajouter un nouvel Utilisateur</button>
+        </div>
+        <div class="card-body">
+          <div class="table-hover table-responsive">
+            <table class="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+              <thead class=" text-primary" *ngIf="this.showtableheader">
+                <tr>
+                  <th>
+                    ID
+                  </th>
+                <th>
+                  Nom
+                </th>
+                <th>
+                  Username
+                </th>
+                <th>
+                  Email
+                </th>
+                <th>
+                  Role
+                </th>
+                <th>
+                  Date de Création
+                </th>
+                <th class="text-center">
+                  Actions
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+
+                <tr *ngFor="let user of users">
+                  <td>
+                    {{user.id}}
+                  </td>
+                  <td>
+                    {{user.firstName}} {{user.lastName}}
+                  </td>
+                  <td>
+                    {{user.username}}
+                  </td>
+                  <td>
+                    {{user.email}}
+                  </td>
+                  <td>
+                    {{user.role}}
+                  </td>
+                  <td>
+                    {{user.joinDate}}
+                  </td>
+                  <td>
+                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                      <a class="btn btn-primary" data-original-title="Modifier" (click)="onOpenModal(user, 'edit')"><i class="fa fa-pencil" aria-hidden="true"></i>Modifier</a>
+                      <a class="btn btn-warning tooltips" *ngIf="user.active" data-original-title="Deactivate" (click)="onOpenModal(user, 'deactivate')"><i class="fa fa-delete" aria-hidden="true"></i>Désactiver</a>
+                      <a class="btn btn-success tooltips" *ngIf="!user.active" data-original-title="Activate" (click)="onOpenModal(user, 'activate')"><i class="fa fa-delete" aria-hidden="true"></i>Activer</a>
+                      <a class="btn btn-danger tooltips" data-original-title="Delete" (click)="onOpenModal(user, 'delete')"><i class="fa fa-delete" aria-hidden="true"></i>Supprimer</a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- add-User-Modal -->
+<div class="modal fade" id="addUserModal" data-bs-backdrop="static" data-bs-keyboard="true" role="dialog"  tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ajouter un Nouvel Utilisateur</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form #addForm = "ngForm" (ngSubmit)="onAddUser(addForm)">
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="firstname">Prenom</label>
+            <input type="text" ngModel name="firstName" class="form-control" id="firstname" placeholder="Prenom" required>
+          </div>
+          <div class="form-group">
+            <label for="lastname">Nom</label>
+            <input type="text" ngModel name="lastName" class="form-control" id="lastname" placeholder="Nom" required>
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" ngModel name="username" class="form-control" id="username" placeholder="username" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Mot de Passe</label>
+            <input type="text" ngModel name="password" class="form-control" id="password" placeholder="password" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Adresse Email</label>
+            <input type="email" ngModel name="email" class="form-control" id="email" placeholder="Email" required>
+          </div>
+          <div class="form-group">
+            <label for="Role">Role</label>
+            <select class="form-control" ngModel name="role" aria-label="Default select example" required>
+              <option selected>Choisir un role</option>
+              <option value="ROLE_ADMIN">Admin</option>
+              <option value="ROLE_MODERATOR">Moderateur</option>
+              <option value="ROLE_USER">Utilisateur</option>
+            </select>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="annuler-add" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Ajouter</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+<!-- Edit-User-Modal -->
+<div class="modal fade" id="editUserModal" data-bs-backdrop="static" data-bs-keyboard="true" role="dialog"  tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modifier l'Utilisateur</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #editForm="ngForm">
+          <input type="hidden" ngModel = "{{editedUser?.id}}" name="id" id="id">
+          <div class="form-group">
+            <label for="firstname">Prenom</label>
+            <input type="text" ngModel = "{{editedUser?.firstName}}" name="firstName" class="form-control" id="firstname-edit" placeholder="Prenom" required>
+          </div>
+          <div class="form-group">
+            <label for="lastname">Nom</label>
+            <input type="text" ngModel = "{{editedUser?.lastName}}" name="lastName" class="form-control" id="lastname-edit" placeholder="Nom" required>
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" ngModel = "{{editedUser?.username}}" name="username" class="form-control" id="username-edit" placeholder="username" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Adresse Email</label>
+            <input type="email" ngModel = "{{editedUser?.email}}" name="email" class="form-control" id="email-edit" placeholder="Email" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="annuler-edit" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" id="submit-edit" class="btn btn-primary" (click)="onEditUser(editForm.value)">Modifier</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- deactivate-User-Modal -->
+<div class="modal fade" id="deactivateUserModal" role="dialog" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Alerte : Désactivation de compte</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>êtes-vous sûr de vouloir désactiver ce compte ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="annuler-deactivate" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" id="submit-deactivate" class="btn btn-danger" (click)="onDeactivateUser(deactivateUser)">Désactiver</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- activate-User-Modal -->
+<div class="modal fade" id="activateUserModal" role="dialog" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Alerte : Activation de compte</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>êtes-vous sûr de vouloir activer ce compte ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="annuler-activate" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" id="submit-activate" class="btn btn-danger" (click)="onActivateUser(activateUser)">activer</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- delete-User-Modal -->
+<div class="modal fade" id="deleteUserModal" role="dialog"  tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Alerte : Suppression de Compte</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>êtes-vous sûr de vouloir Supprimer cet utilisateur {{deleteUser?.username}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="annuler-delete" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" id="submit-delete" class="btn btn-danger" (click)="onDeleteUser(deleteUser?.id)">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
