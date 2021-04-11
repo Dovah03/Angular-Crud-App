@@ -118,14 +118,24 @@ export class TableListComponent implements OnInit,OnDestroy {
     this.userService.addUser(addForm.value).subscribe(
       (response: User)  => {
         this.showLoadingSpinner = false;
-        this.toastr.success('utilisateur de nom '+response.firstName+' crée avec succées','utilisateur ajouter')
+        this.toastr.success('<span class="now-ui-icons ui-1_bell-53"></span> utilisateur de nom '+response.firstName+' crée avec succées','utilisateur ajouter', {
+          timeOut: 2000,
+          enableHtml: true,
+          toastClass: "alert alert-success alert-with-icon",
+          positionClass: 'toast-' + 'top' + '-' +  'right'
+          });
         console.log(response);
         addForm.reset();
         this.rerender();
       },
       (error: HttpErrorResponse) => {
         this.showLoadingSpinner = false;
-        this.toastr.error("erreur durant l'ajout de l'utilisateur , check log",'erreur')
+        this.toastr.error('<span class="now-ui-icons ui-1_bell-53"></span> erreur durant l\'ajout de l\'utilisateur , check log','erreur',{
+          timeOut: 2000,
+          enableHtml: true,
+          toastClass: "alert alert-alert alert-with-icon",
+          positionClass: 'toast-' + 'top' + '-' +  'right'
+          });
         console.error(error);
         addForm.reset();
       }
@@ -139,13 +149,23 @@ export class TableListComponent implements OnInit,OnDestroy {
     this.userService.UpdateUserImpl(this.userid,user).subscribe(
       (response: User)  => {
         this.showLoadingSpinner = false;
-        this.toastr.success('utilisateur de nom '+response.firstName+' modifié avec succées','utilisateur modifier')
+        this.toastr.success('<span class="now-ui-icons ui-1_bell-53"></span> utilisateur de nom '+response.firstName+' modifié avec succées','utilisateur modifier' ,{
+          timeOut: 2000,
+          enableHtml: true,
+          toastClass: "alert alert-success alert-with-icon",
+          positionClass: 'toast-' + 'top' + '-' +  'right'
+          });
         console.log(response);
         this.rerender();
       },
       (error: HttpErrorResponse) => {
         this.showLoadingSpinner = false;
-        this.toastr.error("erreur durant la modification de l'utilisateur , check log",'erreur')
+        this.toastr.error('<span class="now-ui-icons ui-1_bell-53"></span>erreur durant la modification de l\'utilisateur , check log','erreur',{
+          timeOut: 2000,
+          enableHtml: true,
+          toastClass: "alert alert-alert alert-with-icon",
+          positionClass: 'toast-' + 'top' + '-' +  'right'
+          });
         console.error(error);
 
       }
@@ -159,13 +179,23 @@ export class TableListComponent implements OnInit,OnDestroy {
     this.userService.deactivateUser(this.userid,user).subscribe(
       (response: void)  => {
         this.showLoadingSpinner = false;
-        this.toastr.success('Compte désactivé avec succées','utilisateur désactiver')
+        this.toastr.success('<span class="now-ui-icons ui-1_bell-53"></span> Compte désactivé avec succées','utilisateur désactiver',{
+          timeOut: 2000,
+          enableHtml: true,
+          toastClass: "alert alert-success alert-with-icon",
+          positionClass: 'toast-' + 'top' + '-' +  'right'
+          });
         console.log(response);
         this.rerender();
       },
       (error: HttpErrorResponse) => {
         this.showLoadingSpinner = false;
-        this.toastr.error("erreur durant la désactivation du compte , check log",'erreur')
+        this.toastr.error('<span class="now-ui-icons ui-1_bell-53"></span>erreur durant la désactivation du compte , check log','erreur',{
+          timeOut: 2000,
+          enableHtml: true,
+          toastClass: "alert alert-alert alert-with-icon",
+          positionClass: 'toast-' + 'top' + '-' +  'right'
+          });
         console.error(error);
 
       }
@@ -179,7 +209,12 @@ export class TableListComponent implements OnInit,OnDestroy {
     this.userService.activateUser(this.userid,user).subscribe(
       (response: void)  => {
         this.showLoadingSpinner = false;
-        this.toastr.success('Compte activé avec succées','utilisateur activé')
+        this.toastr.success('<span class="now-ui-icons ui-1_bell-53"></span>Compte activé avec succées','utilisateur activé',{
+          timeOut: 2000,
+          enableHtml: true,
+          toastClass: "alert alert-success alert-with-icon",
+          positionClass: 'toast-' + 'top' + '-' +  'right'
+          });
         console.log(response);
         this.rerender();
       },
@@ -198,13 +233,23 @@ export class TableListComponent implements OnInit,OnDestroy {
     this.userService.deleteUser(userid).subscribe(
       (response: void)  => {
         this.showLoadingSpinner = false ;
-        this.toastr.success('utilisateur Supprimer avec succées','utilisateur Supprimer')
+        this.toastr.success('<span class="now-ui-icons ui-1_bell-53"></span>utilisateur Supprimer avec succées','utilisateur Supprimer',{
+          timeOut: 2000,
+          enableHtml: true,
+          toastClass: "alert alert-success alert-with-icon",
+          positionClass: 'toast-' + 'top' + '-' +  'right'
+          });
         console.log(response);
         this.rerender();
       },
       (error: HttpErrorResponse) => {
         this.showLoadingSpinner = false;
-        this.toastr.error("erreur durant la suppression de l'utilisateur , check log",'erreur')
+        this.toastr.error('<span class="now-ui-icons ui-1_bell-53"></span>erreur durant la suppression de l\'utilisateur , check log','erreur',{
+          timeOut: 2000,
+          enableHtml: true,
+          toastClass: "alert alert-alert alert-with-icon",
+          positionClass: 'toast-' + 'top' + '-' +  'right'
+          });
         console.error(error);
 
       }

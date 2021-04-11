@@ -84,7 +84,7 @@
 
                 <input type="hidden" class="form-control" id="imageUrl" ngModel = "{{userPrincipal?.profileImageUrl}}" name="profileImageUrl" value="blabla">
               </div>
-              <input type="file" class="form-control" id="formFile" (change) = "selectFile($event)">
+              <input type="file" accept="image/*" class="form-control" id="formFile" (change) = "selectFile($event)">
               </div>
             </div>
           </form>

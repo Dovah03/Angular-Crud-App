@@ -7,14 +7,13 @@ import { UserService } from '../user.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { ErrorService } from './services/error.service';
-import { CommonModule } from '@angular/common'
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css','../../assets/css/bootstrap.min.css',
-  '../../assets/css/now-ui-kit.css',
-  '../../assets/css/now-ui-kit.min.css',
+  styleUrls: ['./login.component.css',//'../../assets/css/bootstrap.min.css',
+  //'../../assets/css/now-ui-kit.css',
+  //'../../assets/css/now-ui-kit.min.css',
 ]
 })
 export class LoginComponent implements OnInit {
