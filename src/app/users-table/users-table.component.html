@@ -1,0 +1,109 @@
+<app-loading *ngIf="this.showLoadingSpinner"></app-loading>
+
+<div class="main-content" id="main-content">
+  <div class="row">
+    <div class="col-md-12">
+    <!--  <div *ngIf="role==='ROLE_ADMIN'" class="card"> -->
+        <div class="card">
+        <div class="card-header">
+          <h4 class="card-title"><strong> Table des Clients</strong></h4>
+          <button class="btn btn-primary" (click)="changeView()">Changer la vue</button>
+        <!--  <button class="btn btn-primary" (click)="onOpenModal(null, 'add')">Créé un Bon de Commande</button> -->
+        </div>
+        <br>
+        <div class="card-body" [hidden]="!this.showtable">
+          <div class="table-hover table-responsive">
+            <table class="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+              <thead class=" text-primary" *ngIf="this.showtableheader">
+                <tr>
+                <th>
+                  Prénom
+                </th>
+                <th>
+                  Nom
+                </th>
+                <th>
+                  Entreprise
+                </th>
+                <th>
+                  B.C Affécté
+                </th>
+                <th>
+                  B.L Affécté
+                </th>
+                <th>
+                  Devis Affécté
+                </th>
+                <th>
+                  Factures
+                </th>
+                <th class="text-center">
+                  Actions
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+
+                <tr *ngFor="let Client of ClientsList" [ngClass]="{'dark': isDark,'light':!isDark}" >
+                  <td>
+                    {{Client.firstName}}
+                  </td>
+                  <td>
+                    {{Client.lastName}}
+                  </td>
+                  <td>
+                    {{Client.company}}
+                  </td>
+                  <td>
+                    {{Client.bcid_list.length}}
+                  </td>
+                  <td>
+                    {{Client.blid_list.length}}
+                  </td>
+                  <td>
+                    {{Client.devisID_list.length}}
+                  </td>
+                  <td>
+                    {{Client.factureID_list.length}}
+                  </td>
+                  <td>
+                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                      <a class="btn btn-primary tooltips" data-original-title="Delete" (click)="onSelect(Client)"><i class="fa fa-delete" aria-hidden="true"></i>Details</a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+    <br><br><br>
+  </div>
+  </div>
+  <div class="main-content" id="main-content" [hidden]="this.showtable">
+    <div class="row">
+      <div *ngFor="let client of ClientsList" class="col-md-4">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-body all-icons">
+              <div class="row">
+            <div class="font-icon-list col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xs-12">
+              <a [routerLink]="[ '/Client',client?.mysqlid]"><div class="font-icon-detail">
+                <h6>Client de Nom : {{client?.firstName}} {{client?.lastName}} <br> <br></h6>
+                <h6>Entreprise : {{client?.company}}</h6>
+
+
+              </div></a>
+            </div>
+          </div>
+          <div class="card-body">
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  </div>
+</div>
+</div>
+

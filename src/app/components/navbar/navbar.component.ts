@@ -3,6 +3,7 @@ import { ROUTES } from '../sidebar/sidebar.component';
 import {Location} from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../login/services/auth.service';
+import { themeService } from '../../Services/theme.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,7 +19,7 @@ export class NavbarComponent implements OnInit {
 
     public isCollapsed = true;
 
-    constructor(location: Location, private element: ElementRef,private router:Router, private Auth:AuthService) {
+    constructor(location: Location, private element: ElementRef,private router:Router, private Auth:AuthService, private theme:themeService) {
       this.location = location;
           this.sidebarVisible = false;
     }
@@ -155,5 +156,9 @@ export class NavbarComponent implements OnInit {
     logout() {
       this.Auth.logout();
       this.router.navigate(['/login']);
+    }
+    onChangeTheme(theme:string){
+     this.theme.ChangeTheme(theme);
+
     }
 }

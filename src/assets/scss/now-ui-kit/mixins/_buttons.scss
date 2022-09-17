@@ -1,4 +1,4 @@
-// Mixin for generating new styles
+/* Mixin for generating new styles */
 @mixin btn-styles($btn-color, $btn-states-color) {
     background-color: $btn-color;
 
@@ -39,7 +39,7 @@
         }
     }
 
-    // btn-neutral style
+    /* btn-neutral style */
     @if $btn-color == $white-color{
         color: $primary-color;
 

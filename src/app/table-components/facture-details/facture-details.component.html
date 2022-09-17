@@ -1,0 +1,106 @@
+<app-loading *ngIf="this.showLoadingSpinner"></app-loading>
+
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content" id="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <button class="btn btn-info" [routerLink]="['/devis-tafacturee']" >Retourner a la list</button>
+
+          <h5 class="title">Details du bon de livraison de Numéro : {{facture?.ID || null}} </h5>
+        </div>
+        <div class="card-body">
+          <form >
+            <div class="row">
+              <div class="col-md-4 pr-1">
+                <h5>Référence : {{facture?.ID || null}}</h5>
+              </div>
+
+              <div class="col-md-4 pr-1">
+                <h5>Quantité : {{facture?.qty}}</h5>
+              </div>
+              <div class="col-md-4 pr-1">
+                <h5>Prix Unitaire : {{facture?.p_u_ht}} DH</h5>
+              </div>
+              <div class="col-md-4 pr-1">
+                <h5>Montant : {{facture?.M_ht}} DH</h5>
+              </div>
+              <div class="col-md-4 pr-1">
+                <h5>Prix Total : {{facture?.Total}} DH</h5>
+              </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+              <div class="col-md-12">
+                <h5 class="title">Désignation : {{facture?.desi}}</h5>
+
+
+              </div>
+
+            </div>
+            <button class="btn btn-primary"  (click)="onOpenModal(facture,'edit')">Modifier le Bonde livraison</button>
+            <button class="btn btn-danger"  (click)="onOpenModal(facture,'delete')">Supprimer le Bon de livraison</button>
+            <button class="btn btn-info" >Télécharger en EXCEL</button>
+            <button class="btn btn-info"  >Télécharger en PDF</button>
+
+
+          </form>
+        </div>
+<!-- Edit-User-Modal -->
+<div class="modal fade" id="editDevisModal" data-bs-backdrop="static" data-bs-keyboard="true" role="dialog"  tabindex="-1" aria-labelledby="EditDevisModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modifier le Devis</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #editForm="ngForm">
+          <input type="hidden" ngModel = "{{facture?._id}}" name="_id" id="id">
+          <div class="form-group">
+            <label for="ID">Num Facture</label>
+            <input type="text" ngModel = "{{facture?.ID}}" name="ID" class="form-control" id="firstname-edit" placeholder="Prenom" required>
+          </div>
+          <div class="form-group">
+            <label for="qty">Quantité</label>
+            <input type="text" ngModel = "{{facture?.qty}}" name="qty" class="form-control" id="username-edit" placeholder="username" required>
+          </div>
+          <div class="form-group">
+            <label for="description">Designation</label>
+            <input type="text" ngModel = "{{facture?.desi}}" name="desi" class="form-control" id="email-edit" placeholder="Email" required>
+          </div>
+          <div class="form-group">
+            <label for="Total">Prix Total</label>
+            <input type="text" ngModel = "{{facture?.Total}}" name="Total" class="form-control" id="email-edit" placeholder="Email" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="annuler-edit" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" id="submit-edit" class="btn btn-primary" (click)="onEdit(editForm.value)">Modifier</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- delete-devis-Modal -->
+<div class="modal fade" id="deleteDevisModal" role="dialog"  tabindex="-1" aria-labelledby="DeleteDevisModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Alerte : Suppression de Bon de livraison</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>êtes-vous sûr de vouloir Supprimer ce Bon de livraison</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="annuler-delete" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" id="submit-delete" class="btn btn-danger" (click)="onDelete()">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>

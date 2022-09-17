@@ -10,10 +10,15 @@ h1,h2,h3,h4,h5,h6{
 }
 
 a{
-    color: $primary-color;
+    &[theme="dark"]{
+      color: $dark-theme-text
+    }
+    &[theme="light"]{
+      color: $light-dashboard-color;
+    }
     &:hover,
     &:focus{
-        color: $primary-color;
+        color: $danger-color;
     }
 }
 h1, .h1 {
@@ -50,7 +55,8 @@ h4, .h4{
 h5, .h5 {
     font-size: $font-size-h5;
     line-height: 1.4em;
-    margin-bottom: 15px;
+    margin-bottom: 1.5px;
+    text-align: center;
 }
 h6, .h6{
     font-size: $font-size-h6;

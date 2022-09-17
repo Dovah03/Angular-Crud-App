@@ -1,0 +1,157 @@
+<app-loading *ngIf="this.showLoadingSpinner"></app-loading>
+
+<div class="main-content" id="main-content">
+  <div class="row">
+    <div class="col-md-12">
+    <!--  <div *ngIf="role==='ROLE_ADMIN'" class="card"> -->
+        <div class="card">
+        <div class="card-header">
+          <h4 class="card-title"><strong> Table des Bons de Livraison</strong></h4>
+          <button class="btn btn-primary" (click)="onOpenModal(null, 'add')">Ajouter un Bon de Livraison</button>
+          <button class="btn btn-primary" (click)="changeView()">Changer la vue</button>
+        </div>
+        <br>
+        <div class="card-body" [hidden]="!this.showtable">
+          <div class="table-hover table-responsive">
+            <table class="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+              <thead class=" text-primary" *ngIf="this.showtableheader">
+                <tr>
+                <th>
+                  Num Offre
+                </th>
+                <th>
+                  référence
+                </th>
+                <th>
+                  Designation
+                </th>
+                <th>
+                  Quantité
+                </th>
+                <th>
+                  Item
+                </th>
+                <th>
+                  PO
+                </th>
+                <th>
+                  date de création
+                </th>
+                <th>
+                  date de dernière modification
+                </th>
+                <th class="text-center">
+                  Actions
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+
+                <tr [ngClass]="{'dark': isDark,'light':!isDark}" *ngFor="let bon of bl">
+                  <td>
+                    {{bon.numoffre}}
+                  </td>
+                  <td>
+                    {{bon.ref}}
+                  </td>
+                  <td>
+                    {{bon.desi}}
+                  </td>
+                  <td>
+                    {{bon.qty}}
+                  </td>
+                  <td>
+                    {{bon.item}}
+                  </td>
+                  <td>
+                    {{bon.po}}
+                  </td>
+                  <td>
+                    {{bon.date}}
+                  </td>
+                  <td>
+                    {{bon.datemodif}}
+                  </td>
+                  <td>
+                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                      <a class="btn btn-primary tooltips" data-original-title="Delete" (click)="onSelect(bon)"><i class="fa fa-delete" aria-hidden="true"></i>Details</a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+    <br><br><br>
+  </div>
+  </div>
+  <div class="main-content" id="main-content" [hidden]="this.showtable">
+    <div class="row">
+      <div *ngFor="let bon of bl" class="col-md-4">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-body all-icons">
+              <div class="row">
+            <div class="font-icon-list col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xs-12">
+              <a [routerLink]="[ '/BL',bon.numoffre]"><div class="font-icon-detail">
+                <h6>B.C de Numero : {{bon.numoffre}} <br> <br></h6>
+                <h6>Desc : {{bon.Desc}}</h6>
+                <h6>Quantité : {{bon.qty}}</h6>
+                <h6>Prix Total : {{bon.total}}</h6>
+
+              </div></a>
+            </div>
+          </div>
+          <div class="card-body">
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  </div>
+</div>
+  <!-- add-BC-Modal -->
+<div class="modal fade" id="addUserModal" data-bs-backdrop="static" data-bs-keyboard="true" role="dialog"  tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ajouter un Nouveau Bon de Livraison</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form #addForm = "ngForm" (ngSubmit)="onAddBL(addForm)">
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="numoffre" class="field-Label">Num Offre</label>
+            <input type="number" ngModel name="numoffre" class="form-control" id="numoffre" placeholder="Num_Offre" required>
+          </div>
+          <div class="form-group">
+            <label for="ref" class="field-Label">référence</label>
+            <input type="text" ngModel name="ref" class="form-control" id="ref" placeholder="référence" required>
+          </div>
+          <div class="form-group">
+            <label for="qty" class="field-Label">Quantité</label>
+            <input type="number" ngModel name="qty" class="form-control" id="qty" placeholder="Quantité" required>
+          </div>
+          <div class="form-group">
+            <label for="po" class="field-Label">PO</label>
+            <input type="text" ngModel name="po" class="form-control" id="po" placeholder="PO" required>
+          </div>
+          <div class="form-group">
+            <label for="item" class="field-Label">Item</label>
+            <input type="text" ngModel name="item" class="form-control" id="item" placeholder="Item" required>
+          </div>
+          <div class="form-group">
+            <label for="desi" class="field-Label">designation</label>
+            <input type="text" ngModel name="desi" class="form-control" id="desi" placeholder="designation" required>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="annuler-add" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Ajouter</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>

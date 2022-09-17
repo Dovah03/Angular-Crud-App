@@ -8,6 +8,22 @@ $none:                       0   !default;
 $border-thin:                1px !default;
 $border-thick:               2px !default;
 
+//themes
+$light-theme-text:          #05070654;
+$light-theme-navbar:        #429632;
+$light-theme-sidebar:       #429632;
+$light-theme-body:          #ebecf1;
+$light-theme-card:          #ffff;
+$light-dashboard-color:     #f96332;
+
+$dark-theme-text:           #f0f0f0dc;
+$dark-theme-navbar:         #032c06fa;
+$dark-theme-sidebar:        #032c06fa;
+$dark-theme-body:           #25302a;
+$dark-theme-card:           #070707ea;
+
+$user-profile-text-color:   #7e8686;
+
 $white-color:                #FFFFFF !default;
 $white-bg:                   #FFFFFF !default;
 $orange-bg:                  #e95e38 !default;
@@ -17,7 +33,8 @@ $light-black:                #444    !default;
 
 $black-bg:                   rgba(30,30,30,.97) !default;
 
-$black-color:                #2c2c2c !default;
+//header-bar color
+$black-color:                #020701 !default;
 $black-hr:                   #444444 !default;
 
 $hr-line:                    rgba(0,0,0, .1) !default;
@@ -48,13 +65,13 @@ $default-color:              #888 !default;
 $default-states-color:       lighten($default-color, 6%) !default;
 $default-color-opacity:      rgba(182, 182, 182, .6) !default;
 
-$primary-color:              #f96332 !default;
+$primary-color:              #429632 !default;
 //$primary-color:              rgb(152,203,50) !default;
 $primary-states-color:       lighten($primary-color, 6%) !default;
 $primary-color-opacity:      rgba(249, 99, 50, .3) !default;
 $primary-color-alert:        rgba(249, 99, 50, .8) !default;
 
-$success-color:              #18ce0f !default;
+$success-color:              #41a12e !default;
 $success-states-color:       lighten($success-color, 6%) !default;
 $success-color-opacity:      rgba(24, 206, 15, .3) !default;
 $success-color-alert:        rgba(24, 206, 15, .8) !default;

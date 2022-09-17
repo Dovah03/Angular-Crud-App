@@ -1,26 +1,25 @@
 <app-loading *ngIf="this.showLoadingSpinner"></app-loading>
 
-<div class="panel-header panel-header-sm">
-</div>
+
 <div class="main-content" id="main-content">
   <div class="row">
     <div class="col-md-8">
       <div class="card">
         <div class="card-header">
-          <h5 class="title">Profile Utilisateur</h5>
+          <h4 class="card-title"><strong>Profile Utilisateur</strong></h4>
         </div>
         <div class="card-body">
           <form #editForm = "ngForm">
             <div class="row">
               <div class="col-md-5 pr-1">
                 <div class="form-group">
-                  <label>Company (disabled)</label>
-                  <input type="text" class="form-control" disabled="" placeholder="Company" value="Isoqualtech sarl.">
+                  <label for="company">Entreprise</label>
+                  <input ngModel = "{{userPrincipal?.company}}" name="company" type="text" class="form-control" disabled="" placeholder="Nom de l'entreprise">
                 </div>
               </div>
               <div class="col-md-3 px-1">
                 <div class="form-group">
-                  <label>Username</label>
+                  <label >Username</label>
                   <input ngModel = "{{userPrincipal?.username}}" name="username" type="text" class="form-control" placeholder="Username">
                 </div>
               </div>
@@ -82,9 +81,9 @@
                 <div class="form-group">
                   <label>changer la photo de profile</label>
 
-                <input type="hidden" class="form-control" id="imageUrl" ngModel = "{{userPrincipal?.profileImageUrl}}" name="profileImageUrl" value="blabla">
+                <input type="hidden" id="imageUrl" ngModel = "{{userPrincipal?.profileImageUrl}}" name="profileImageUrl" >
               </div>
-              <input type="file" accept="image/*" class="form-control" id="formFile" (change) = "selectFile($event)">
+              <input type="file" accept="image/*" class="btn btn-primary" id="formFile" (change) = "selectFile($event)">
               </div>
             </div>
           </form>
@@ -100,7 +99,7 @@
           <div class="author">
             <a href="#">
               <img *ngIf="userPrincipal?.profileImageUrl" class="avatar border-gray" id="profilePic" src={{userPrincipal?.profileImageUrl}} alt="...">
-              <h5 class="title">{{userPrincipal?.username}}</h5>
+              <h4 class="title">{{userPrincipal?.username}}</h4>
             </a>
             <p class="description">
               {{userPrincipal?.firstName}} {{userPrincipal?.lastName}}
@@ -113,11 +112,11 @@
         <hr>
         <div class="button-container">
 
-          <button id="editbtn"  (click)="onOpenModal(user,'profile')" class="btn btn-info btn-lg">
+          <button id="editbtn"  (click)="onOpenModal(user,'profile')" class="btn btn-primary btn-lg">
             <i class="fab fa-twitter"></i>Modifier profile
           </button>
 
-          <button id="editbtn"  (click)="onOpenModal(null,'password')" class="btn btn-warning btn-sm-lg">
+          <button id="editbtn"  (click)="onOpenModal(null,'password')" class="btn btn-success btn-sm-lg">
             <i class="fab fa-twitter"></i>Changer le mot de Passe
           </button>
 

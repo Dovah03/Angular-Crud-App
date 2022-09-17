@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { ErrorService } from '../login/services/error.service';
+import { themeService } from '../Services/theme.service';
 import { User } from '../user';
 import { UserService } from '../user.service';
 
@@ -26,12 +27,14 @@ export class UserProfileComponent implements OnInit,OnDestroy {
   UpdateUserSub: Subscription;
   showLoadingSpinner: boolean = false;
 
-  constructor( private userService: UserService, private fb: FormBuilder, private toastr: ToastrService , private errorService:ErrorService) {
+  constructor( private userService: UserService, private fb: FormBuilder, private toastr: ToastrService , private errorService:ErrorService, private theme:themeService) {
   }
 
   ngOnInit() {
-   this.OnInitSub$ =  this.userService.user$.subscribe(user => {
+    this.theme.setCurrentTheme();
+    this.OnInitSub$ =  this.userService.user$.subscribe(user => {
     this.userPrincipal = user;
+    console.log(this.userPrincipal);
     this.userId = user.id;
   })
 
@@ -113,9 +116,9 @@ export class UserProfileComponent implements OnInit,OnDestroy {
       if(event.target.files[0].type.match(/image\/*/)==null){this.message="veuillez selectionner un fichier Image"; return}
       var reader = new FileReader()
       reader.readAsDataURL(event.target.files[0])
-      console.log(event);
-      console.log(event.target.files[0]);
-      console.log(event.target.files[0].name);
+     // console.log(event);
+     // console.log(event.target.files[0]);
+     // console.log(event.target.files[0].name);
 
       reader.onload = (event: any) => {
         this.url = event.target.result;

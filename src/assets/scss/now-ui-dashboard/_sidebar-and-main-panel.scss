@@ -266,12 +266,15 @@
         @include icon-gradient($default-color);
         z-index: 3;
     }
-
+    //colors
     &[data-color="blue"]{
       @include sidebar-color($info-color);
     }
-    &[data-color="green"]{
-      @include sidebar-color($success-color);
+    &[theme="dark"]{
+      @include sidebar-color($dark-theme-sidebar);
+    }
+    &[theme="light"]{
+      @include sidebar-color($light-theme-sidebar);
     }
     &[data-color="orange"]{
       @include sidebar-color($orange-color);
@@ -311,8 +314,13 @@
     width: $sidebar-width;
     // width: 100%;
     background-color: $light-gray;
-    background-color: #ebecf1;
-
+    // main-panel color
+    &[theme="light"]{
+      background-color: $light-theme-body;
+    }
+    &[theme="dark"]{
+      background-color: $dark-theme-body;
+    }
     @include transition (0.50s, cubic-bezier(0.685, 0.0473, 0.346, 1));
 
     .main-content{
@@ -352,7 +360,12 @@
   height: 260px;
   padding-top: 80px;
   padding-bottom: 45px;
-  @include panel-gradient($black-color);
+  &[theme="light"]{
+    @include panel-gradient($light-theme-navbar);
+  }
+  &[theme="dark"]{
+    @include panel-gradient($dark-theme-navbar);
+  }
   position: relative;
   overflow: hidden;
 

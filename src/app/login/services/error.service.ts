@@ -14,7 +14,7 @@ export class ErrorService implements ErrorHandler{
     handleError(error: HttpErrorResponse): void {
         if(error.status === 0){
             this.toastr.error('<span class="now-ui-icons ui-1_bell-53"></span> Le serveur ne répond pas contactez votre Administrateur', '', {
-                timeOut: 8000,
+                timeOut: 2000,
                 enableHtml: true,
                 closeButton: true,
                 toastClass: "alert alert-danger alert-with-icon",
@@ -22,7 +22,7 @@ export class ErrorService implements ErrorHandler{
                 })        }
         if(error.status === 401){
             this.toastr.error('<span class="now-ui-icons ui-1_bell-53"></span> Session <b>Expirer</b> Veuillez vous reconnecter', '', {
-                timeOut: 8000,
+                timeOut: 2000,
                 enableHtml: true,
                 closeButton: true,
                 toastClass: "alert alert-danger alert-with-icon",
@@ -32,17 +32,17 @@ export class ErrorService implements ErrorHandler{
             this.Auth.logout();
             setTimeout(() => {
                 this.router.navigate(['/login']).then( result => {
-                    if (result) {
+                /*    if (result) {
                       location.reload();
-                    }
+                    }*/
                   } );
             }, 2000);
 
         }
-        
+
         if(error.status === 403){
             this.toastr.error('<span class="now-ui-icons ui-1_bell-53"></span> Vous n\'êtes pas <b>authorizer</b> a voir cette ressource', '', {
-                timeOut: 8000,
+                timeOut: 2000,
                 enableHtml: true,
                 closeButton: true,
                 toastClass: "alert alert-danger alert-with-icon",
@@ -58,6 +58,6 @@ export class ErrorService implements ErrorHandler{
             this.toastr.error('Erreur du Serveur , contacter votre administrateur','Server Error')
                 console.error(error);
         }
-        
+
     }
 }

@@ -1,13 +1,12 @@
 <app-loading *ngIf="this.showLoadingSpinner"></app-loading>
 
-<div class="panel-header panel-header-sm">
-</div>
+
 <div class="main-content" id="main-content">
   <div class="row">
     <div class="col-md-12">
-      <div *ngIf="role==='ROLE_ADMIN'" class="card">
+      <div  class="card" *ngIf="role==='ROLE_ADMIN'">
         <div class="card-header">
-          <h4 class="card-title"> Table des Utilisateurs</h4>
+          <h4 class="card-title"><strong>Table des Utilisateurs</strong></h4>
           <button class="btn btn-primary" (click)="onOpenModal(null, 'add')">Ajouter un nouvel Utilisateur</button>
         </div>
         <div class="card-body">
@@ -25,6 +24,9 @@
                   Username
                 </th>
                 <th>
+                  Entreprise
+                </th>
+                <th>
                   Email
                 </th>
                 <th>
@@ -40,7 +42,7 @@
               </thead>
               <tbody>
 
-                <tr *ngFor="let user of users">
+                <tr  *ngFor="let user of users" [ngClass]="{'dark': isDark,'light':!isDark}" id="table-row">
                   <td>
                     {{user.id}}
                   </td>
@@ -49,6 +51,9 @@
                   </td>
                   <td>
                     {{user.username}}
+                  </td>
+                  <td>
+                    {{user.company}}
                   </td>
                   <td>
                     {{user.email}}
@@ -88,27 +93,35 @@
       <form #addForm = "ngForm" (ngSubmit)="onAddUser(addForm)">
       <div class="modal-body">
           <div class="form-group">
-            <label for="firstname">Prenom</label>
+            <label for="firstname" class="field-Label">Prenom</label>
             <input type="text" ngModel name="firstName" class="form-control" id="firstname" placeholder="Prenom" required>
           </div>
           <div class="form-group">
-            <label for="lastname">Nom</label>
+            <label for="lastname" class="field-Label">Nom</label>
             <input type="text" ngModel name="lastName" class="form-control" id="lastname" placeholder="Nom" required>
           </div>
           <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" ngModel name="username" class="form-control" id="username" placeholder="username" required>
+            <label for="username" class="field-Label">Username</label>
+            <input type="text" ngModel name="username" class="form-control" id="username" placeholder="Username" required>
           </div>
           <div class="form-group">
-            <label for="password">Mot de Passe</label>
-            <input type="text" ngModel name="password" class="form-control" id="password" placeholder="password" required>
+            <label for="password" class="field-Label">Mot de Passe</label>
+            <input type="password" ngModel name="password" class="form-control" id="password" placeholder="Mot de Passe" required>
           </div>
           <div class="form-group">
-            <label for="email">Adresse Email</label>
+            <label for="passwordConf" class="field-Label">Confirmer le Mot de Passe</label>
+            <input type="password" ngModel name="passwordConf" class="form-control" id="password" placeholder="Confirmer le Mot de Passe" required>
+          </div>
+          <div class="form-group">
+            <label for="email" class="field-Label">Adresse Email</label>
             <input type="email" ngModel name="email" class="form-control" id="email" placeholder="Email" required>
           </div>
           <div class="form-group">
-            <label for="Role">Role</label>
+            <label for="company" class="field-Label">Entreprise</label>
+            <input type="text" ngModel name="company" class="form-control" id="company" placeholder="Entreprise" required>
+          </div>
+          <div class="form-group">
+            <label for="Role" class="field-Label">Role</label>
             <select class="form-control" ngModel name="role" aria-label="Default select example" required>
               <option selected>Choisir un role</option>
               <option value="ROLE_ADMIN">Admin</option>

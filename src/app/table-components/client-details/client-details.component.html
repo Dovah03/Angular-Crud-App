@@ -1,0 +1,589 @@
+<app-loading *ngIf="this.showLoadingSpinner"></app-loading>
+
+
+<div class="main-content" id="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <a style="font-size: large;" class="font-icon-detail" [routerLink]="['/Clients']" ><strong><i class="now-ui-icons arrows-1_minimal-left"></i> Retourner a la list</strong></a>
+          <div style="float : right" aria-label="Button group with nested dropdown">
+            <button   style="float : right" class="btn btn-primary" (click)="onOpenModal('mail')"> Envoyer un Email</button>
+            <div style="float : right" class="btn-group" role="group">
+              <button id="btnGroupDrop1" type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                Affecter/Retirer Document
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <li><a class="dropdown-item" (click)="onOpenModal('devis')">Devis</a></li>
+                <li><a class="dropdown-item" (click)="onOpenModal('bc')">Bon de Commande</a></li>
+                <li><a class="dropdown-item" (click)="onOpenModal('bl')">Bon de Livraison</a></li>
+
+              </ul>
+              </div>
+
+              <div style="float : right" class="btn-group" role="group">
+
+              <button id="btnGroupDrop1" type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                Afficher Documents Affecté
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <li><a class="dropdown-item" (click)="onOpenModal('affdevis')">Devis</a></li>
+                <li><a class="dropdown-item" (click)="onOpenModal('affbc')">Bon de Commande</a></li>
+                <li><a class="dropdown-item" (click)="onOpenModal('affbl')">Bon de Livraison</a></li>
+
+              </ul>
+            </div>
+            </div>
+
+
+          <br><br><br><br>
+        <div class="card-margin">
+          <h5 class="details-title">Details du Client : {{client?.firstName}} {{client?.lastName}} </h5>
+          <h5 class="details-title">de l'Entreprise : {{client?.company}} </h5>
+          <br><br>
+          <form >
+
+              <div class="col-md-12 pr-1">
+              </div>
+              <br>
+              <br>
+              <div class="row">
+              <div class="col-md-4 pr-1">
+                <h5 class="details"><strong>Devis Affectés : </strong>{{client?.devisID_list.length}}</h5>
+              </div>
+              <div class="col-md-4 pr-1">
+                <h5 class="details"><strong> Bons de Commande Affectés : </strong> {{client?.bcid_list.length}}</h5>
+              </div>
+
+              <div class="col-md-4 pr-1">
+                <h5 class="details"><strong>Bons de Livraison Affectés : </strong>{{client?.blid_list.length}} </h5>
+              </div>
+
+              <div class="col-md-12 pr-1">
+                <h5 class="details"><strong>Factures générés : </strong>0 </h5>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+      <br>
+    </div>
+
+
+    <!-- sendMail-Modal -->
+<div class="modal fade" id="sendMailModal" data-bs-backdrop="static" data-bs-keyboard="true" role="dialog"  tabindex="-1" aria-labelledby="sendMailModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Formulaire Email</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="user" [formGroup]="this.EmailForm" (ngSubmit)="SendMail()">
+          <div class="form-group">
+            <label for="to">Email Destination</label>
+            <input type="text" name="to" formControlName="to" ngModel="{{client?.email}}" class="form-control" id="to-edit" placeholder="Email Destination" required>
+          </div>
+          <div class="form-group">
+            <label for="subject">Sujet</label>
+            <input type="text"  name="subject" formControlName="subject" class="form-control" id="subject-edit" placeholder="Sujet" required>
+          </div>
+          <div class="form-group">
+            <label for="text">Contenue</label>
+            <textarea rows="4" cols="80" type="text" name="text" formControlName="text" class="form-control" id="text-edit" placeholder="Contenue" required></textarea>
+          </div>
+          <div><strong>Piece Jointe</strong></div>
+          <div *ngIf="this.filestatus.status==='progress'">
+            <div class="progress">
+              <div [style.width.%]="filestatus.percent" class="progress-bar progress-bar-animated bg-info" role="progressbar" aria-valuenow="">
+                {{filestatus.requestType}}... {{filestatus.percent}}
+              </div>
+
+            </div>
+          </div>
+          <input type="file" accept="*" class="form-control"  (change) = "onUploadFiles($event.target.files)" multiple>
+      <div class="modal-footer">
+        <button type="button" id="annuler-mail" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="submit" id="submit-mail" class="btn btn-primary" >envoyer</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+</div>
+<!-- AffectDevis-Modal -->
+    <div class="modal fade" id="affectDevisModal" data-bs-backdrop="static" data-bs-keyboard="true" role="dialog"  tabindex="-1" aria-labelledby="affectDevisModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Affecter Devis</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="card-body">
+              <div class="table-hover table-responsive">
+                <table class="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                  <thead class=" text-primary"  *ngIf="this.showtableheader">
+                    <tr>
+                    <th>
+                      Num-Offre
+                    </th>
+                    <th>
+                      Num-Article
+                    </th>
+                    <th>
+                      Description
+                    </th>
+                    <th>
+                      Quantité
+                    </th>
+                    <th>
+                      Prix Unitaire HT
+                    </th>
+                    <th>
+                      Prix Total HT
+                    </th>
+                    <th class="text-center">
+                      Action
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody >
+
+                    <tr  [ngClass]="{'dark': isDark,'light':!isDark}" *ngFor="let Devis of DevisList">
+                      <td>
+                        {{Devis.numOffre}}
+                      </td>
+                      <td>
+                        {{Devis.num_Article}}
+                      </td>
+                      <td>
+                        {{Devis.description}}
+                      </td>
+                      <td>
+                        {{Devis.qty}}
+                      </td>
+                      <td>
+                        {{Devis.p_U_HT}}
+                      </td>
+                      <td>
+                        {{Devis.p_T_HT}}
+                      </td>
+                      <td>
+                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                          <a class="btn btn-primary tooltips" *ngIf="!Devis.isSelected" data-original-title="select" (click)="onSelectDevis(Devis)"><i class="fa fa-delete" aria-hidden="true"></i>Enregistrer</a>
+                          <a class="btn btn-warning tooltips" *ngIf="Devis.isSelected" data-original-title="unselect" (click)="onDeselectDevis(Devis)"><i class="fa fa-delete" aria-hidden="true"></i>Retirer</a>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+          </div>
+
+
+          <div class="modal-footer">
+            <button type="button" id="annuler-affecterDevis" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+            <button type="submit" id="submit-affecterDevis" class="btn btn-primary" (click)="onUpdateClient()" >Enregistrer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- AffichertDevis-Modal -->
+    <div class="modal fade" id="afficherDevis" data-bs-backdrop="static" data-bs-keyboard="true" role="dialog"  tabindex="-1" aria-labelledby="afficherDevisModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="eModalLabel">Devis Affecté</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="card-body">
+              <div class="table-hover table-responsive">
+                <table class="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                  <thead class=" text-primary"  *ngIf="this.showtableheader">
+                    <tr>
+                    <th>
+                      Num-Offre
+                    </th>
+                    <th>
+                      Num-Article
+                    </th>
+                    <th>
+                      Description
+                    </th>
+                    <th>
+                      Quantité
+                    </th>
+                    <th>
+                      Prix Unitaire HT
+                    </th>
+                    <th>
+                      Prix Total HT
+                    </th>
+                    <th class="text-center">
+                      Action
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody >
+
+                    <tr  [ngClass]="{'dark': isDark,'light':!isDark}" *ngFor="let devis of DevisAAfficher">
+                      <td>
+                        {{devis.numOffre}}
+                      </td>
+                      <td>
+                        {{devis.num_Article}}
+                      </td>
+                      <td>
+                        {{devis.description}}
+                      </td>
+                      <td>
+                        {{devis.qty}}
+                      </td>
+                      <td>
+                        {{devis.p_U_HT}}
+                      </td>
+                      <td>
+                        {{devis.p_T_HT}}
+                      </td>
+                      <td>
+                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                          <a class="btn btn-primary tooltips" data-bs-dismiss="modal" data-original-title="select" [routerLink]="['/devis-table',devis.numOffre]" ><i class="fa fa-delete" aria-hidden="true"></i>Details</a>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+          </div>
+
+
+          <div class="modal-footer">
+            <button type="button" id="annuler-afficherDevis" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+<!-- AffectBC-Modal -->
+<div class="modal fade" id="affectBCModal" data-bs-backdrop="static" data-bs-keyboard="true" role="dialog"  tabindex="-1" aria-labelledby="affectDevisModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Affecter: Bon de Commande</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card-body">
+          <div class="table-hover table-responsive">
+            <table class="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+              <thead class=" text-primary"  *ngIf="this.showtableheader">
+                <tr>
+                <th>
+                  Num-Offre
+                </th>
+                <th>
+                  référence
+                </th>
+                <th>
+                  Designation
+                </th>
+                <th>
+                  Quantité
+                </th>
+                <th>
+                  Prix Unitaire HT
+                </th>
+                <th>
+                  Montant Total HT
+                </th>
+                <th class="text-center">
+                  Action
+                </th>
+              </tr>
+              </thead>
+              <tbody >
+
+                <tr  [ngClass]="{'dark': isDark,'light':!isDark}" *ngFor="let bc of BCList">
+                  <td>
+                    {{bc.numoffre}}
+                  </td>
+                  <td>
+                    {{bc.ref}}
+                  </td>
+                  <td>
+                    {{bc.desi}}
+                  </td>
+                  <td>
+                    {{bc.qty}}
+                  </td>
+                  <td>
+                    {{bc.p_u_ht}}
+                  </td>
+                  <td>
+                    {{bc.m_ht}}
+                  </td>
+                  <td>
+                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                      <a class="btn btn-primary tooltips" *ngIf="!bc.isSelected" data-original-title="select" (click)="onSelectBC(bc)"><i class="fa fa-delete" aria-hidden="true"></i>Enregistrer</a>
+                      <a class="btn btn-warning tooltips" *ngIf="bc.isSelected" data-original-title="unselect" (click)="onDeselectBC(bc)"><i class="fa fa-delete" aria-hidden="true"></i>Retirer</a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
+
+
+      <div class="modal-footer">
+        <button type="button" id="annuler-affecterBC" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="submit" id="submit-affecterBC" class="btn btn-primary" (click)="onUpdateClientBC()" >Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- AfficherBC-Modal -->
+<div class="modal fade" id="afficherBCModal" data-bs-backdrop="static" data-bs-keyboard="true" role="dialog"  tabindex="-1" aria-labelledby="affectDevisModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Bon de Commande Affecté</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card-body">
+          <div class="table-hover table-responsive">
+            <table class="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+              <thead class=" text-primary"  *ngIf="this.showtableheader">
+                <tr>
+                <th>
+                  Num-Offre
+                </th>
+                <th>
+                  référence
+                </th>
+                <th>
+                  Designation
+                </th>
+                <th>
+                  Quantité
+                </th>
+                <th>
+                  Prix Unitaire HT
+                </th>
+                <th>
+                  Montant Total HT
+                </th>
+                <th class="text-center">
+                  Action
+                </th>
+              </tr>
+              </thead>
+              <tbody >
+
+                <tr  [ngClass]="{'dark': isDark,'light':!isDark}" *ngFor="let bc of BCAAfficher">
+                  <td>
+                    {{bc.numoffre}}
+                  </td>
+                  <td>
+                    {{bc.ref}}
+                  </td>
+                  <td>
+                    {{bc.desi}}
+                  </td>
+                  <td>
+                    {{bc.qty}}
+                  </td>
+                  <td>
+                    {{bc.p_u_ht}}
+                  </td>
+                  <td>
+                    {{bc.m_ht}}
+                  </td>
+                  <td>
+                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                      <button class="btn btn-primary tooltips" data-bs-dismiss="modal" data-original-title="select" data-bs-dismiss="modal" [routerLink]="['/BC',bc.numoffre]"><i class="fa fa-delete" aria-hidden="true"></i>Details</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
+
+
+      <div class="modal-footer">
+        <button type="button" id="annuler-showBL" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- AffectBL-Modal -->
+<div class="modal fade" id="affectBLModal" data-bs-backdrop="static" data-bs-keyboard="true" role="dialog"  tabindex="-1" aria-labelledby="affectDevisModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Affecter: Bon de Livraison</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card-body">
+          <div class="table-hover table-responsive">
+            <table class="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+              <thead class=" text-primary"  *ngIf="this.showtableheader">
+                <tr>
+                <th>
+                  Num-Offre
+                </th>
+                <th>
+                  référence
+                </th>
+                <th>
+                  Designation
+                </th>
+                <th>
+                  Quantité
+                </th>
+                <th>
+                  Item
+                </th>
+                <th>
+                  PO
+                </th>
+                <th class="text-center">
+                  Action
+                </th>
+              </tr>
+              </thead>
+              <tbody >
+
+                <tr  [ngClass]="{'dark': isDark,'light':!isDark}" *ngFor="let bl of BLList">
+                  <td>
+                    {{bl.numoffre}}
+                  </td>
+                  <td>
+                    {{bl.ref}}
+                  </td>
+                  <td>
+                    {{bl.desi}}
+                  </td>
+                  <td>
+                    {{bl.qty}}
+                  </td>
+                  <td>
+                    {{bl.item}}
+                  </td>
+                  <td>
+                    {{bl.po}}
+                  </td>
+                  <td>
+                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                      <a class="btn btn-primary tooltips" *ngIf="!bl.isSelected" data-original-title="select" (click)="onSelectBL(bl)"><i class="fa fa-delete" aria-hidden="true"></i>Enregistrer</a>
+                      <a class="btn btn-warning tooltips" *ngIf="bl.isSelected" data-original-title="unselect" (click)="onDeselectBL(bl)"><i class="fa fa-delete" aria-hidden="true"></i>Retirer</a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
+
+
+      <div class="modal-footer">
+        <button type="button" id="annuler-affecterBL" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="submit" id="submit-affecterBL" class="btn btn-primary" (click)="onUpdateClientBL()" >Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- AffectBL-Modal -->
+<div class="modal fade" id="afficherBLModal" data-bs-backdrop="static" data-bs-keyboard="true" role="dialog"  tabindex="-1" aria-labelledby="affectDevisModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Bon de Livraison Affecté</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card-body">
+          <div class="table-hover table-responsive">
+            <table class="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+              <thead class=" text-primary"  *ngIf="this.showtableheader">
+                <tr>
+                <th>
+                  Num-Offre
+                </th>
+                <th>
+                  référence
+                </th>
+                <th>
+                  Designation
+                </th>
+                <th>
+                  Quantité
+                </th>
+                <th>
+                  Item
+                </th>
+                <th>
+                  PO
+                </th>
+                <th class="text-center">
+                  Action
+                </th>
+              </tr>
+              </thead>
+              <tbody >
+
+                <tr  [ngClass]="{'dark': isDark,'light':!isDark}" *ngFor="let bl of BLAAfficher">
+                  <td>
+                    {{bl.numoffre}}
+                  </td>
+                  <td>
+                    {{bl.ref}}
+                  </td>
+                  <td>
+                    {{bl.desi}}
+                  </td>
+                  <td>
+                    {{bl.qty}}
+                  </td>
+                  <td>
+                    {{bl.p_u_ht}}
+                  </td>
+                  <td>
+                    {{bl.m_ht}}
+                  </td>
+                  <td>
+                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                      <a class="btn btn-primary tooltips" data-original-title="select" data-bs-dismiss="modal" [routerLink]="['/BL',bl.numoffre]"><i class="fa fa-delete" aria-hidden="true"></i>Details</a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
+
+
+      <div class="modal-footer">
+        <button type="button" id="annuler-affecterBL" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+

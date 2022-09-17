@@ -1,9 +1,18 @@
 .card{
-    border: 0;
+    border: 10px;
     border-radius: $border-radius-small;
     display: inline-block;
     position: relative;
     width: 100%;
+    //background-color
+    &[theme="light"]{
+      background-color: $light-theme-card;
+
+    }
+    &[theme="dark"]{
+      background-color: $dark-theme-card;
+
+    }
     margin-bottom: 20px;
     box-shadow: $box-shadow;
 
@@ -16,10 +25,21 @@
         }
     }
 
+    .card-margin{
+      padding: 15px 15px 10px 15px;
+      border: 3px;
+      border-style: solid;
+      border-color: #429632;
+      &.table-full-width{
+          padding-left: 0;
+          padding-right: 0;
+      }
+  }
     .card-header{
       &:not([data-background-color]){
         background-color: transparent;
       }
+      color: $danger-color;
       padding: 15px 15px 0;
       border: 0;
 

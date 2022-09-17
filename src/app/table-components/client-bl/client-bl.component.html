@@ -1,0 +1,26 @@
+<app-loading *ngIf="this.showLoadingSpinner"></app-loading>
+
+<div class="main-content" id="main-content">
+  <div class="row">
+    <div *ngFor="let bl of BL" class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-body all-icons">
+            <div class="row">
+          <div class="font-icon-list col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xs-12">
+            <a [routerLink]="[ '/BL',bl.numoffre]"><div class="font-icon-detail">
+              <i class="now-ui-icons users_circle-08"></i><br><br>
+              <h6>B.C de Numero : {{bl.numoffre}} <br> <br></h6>
+              <h6>ref : {{bl.ref}}</h6>
+              <h6>Quantité : {{bl.qty}}</h6>
+              <h6>P.O : {{bl.po}}</h6>
+
+            </div></a>
+          </div>
+        </div>
+        <div class="card-body">
+      </div>
+    </div>
+  </div>
+  </div>
+</div>

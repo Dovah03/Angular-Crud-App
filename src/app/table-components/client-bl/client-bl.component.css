@@ -1,0 +1,22 @@
+.details-title{
+  font-size: large;
+  font-style: italic;
+  margin: 2% 25%;
+  padding: 1% 2% ;
+  border-radius: 25%;
+  border-style: groove;
+  border-color: rgb(85, 112, 85);
+
+}
+.details{
+  font-size: medium;
+  font-style: oblique;
+  text-align: center;
+  padding: 2%;
+  margin: 2%;
+  border-radius: 5%;
+  border-style: groove;
+  border-color: rgb(85, 112, 85);
+
+
+}

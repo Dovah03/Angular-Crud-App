@@ -9,6 +9,7 @@ import { NgForm } from '@angular/forms';
 import { DataTableDirective } from 'angular-datatables';
 import { AuthService } from '../login/services/auth.service';
 import { ErrorService } from '../login/services/error.service';
+import { themeService } from '../Services/theme.service';
 
 @Component({
   selector: 'app-table-list',
@@ -26,20 +27,21 @@ export class TableListComponent implements OnInit,OnDestroy {
   deleteUser:User;
   deactivateUser:User;
   activateUser:User;
-  private userPrincipale:User;
   role:string ;
   private UserPrincipal$: Subscription;
   UserList$: Subscription;
 
   showLoadingSpinner:boolean = false; //show loading while hiding datatable
   showtableheader:boolean = true;
+  isDark:boolean;
 
-  constructor(private userService:UserService, private toastr: ToastrService, private http: HttpClient, private Auth:AuthService, private errService: ErrorService) { }
+  constructor(private userService:UserService, private toastr: ToastrService, private http: HttpClient, private Auth:AuthService, private errService: ErrorService,private theme:themeService) { }
 
   ngOnInit() {
 
+    this.isDark = this.theme.getCurrentTheme();
+
     this.UserPrincipal$ = this.userService.user$.subscribe( user => {
-      this.userPrincipale = user;
       this.role = user.role;
     });
     if (this.role === "ROLE_ADMIN")
@@ -51,6 +53,8 @@ export class TableListComponent implements OnInit,OnDestroy {
       language: {
         search: "rechercher:",
         info: "Montrant le _START_ au _END_ de _TOTAL_ éléments en total",
+        infoEmpty: "Montrant 0 de 0 éléments en total",
+        infoFiltered: " (filtrer de _MAX_ éléments en total)",
         emptyTable: "Aucune donnée disponible dans le tableau",
         lengthMenu: "Afficher _MENU_ éléments",
         loadingRecords: "Chargement...",
@@ -82,6 +86,8 @@ export class TableListComponent implements OnInit,OnDestroy {
         this.showLoadingSpinner = false;
         this.showtableheader = true;
         this.dtTrigger.next();
+        this.isDark = this.theme.getCurrentTheme();
+
       },
       (error ) => {
         this.errService.handleError(error);
@@ -113,6 +119,15 @@ export class TableListComponent implements OnInit,OnDestroy {
     });
   }
   public onAddUser(addForm: NgForm): void {
+    if(addForm.value.password != addForm.value.passwordConf) {
+      this.toastr.error('<span class="now-ui-icons ui-1_bell-53"></span> Mots de passe non similaire , veuillez ressaisir le Mot de passe','erreur',{
+        timeOut: 2000,
+        enableHtml: true,
+        toastClass: "alert alert-alert alert-with-icon",
+        positionClass: 'toast-' + 'top' + '-' +  'right'
+        });
+    }
+    else {
     document.getElementById('annuler-add').click();
     this.showLoadingSpinner = true;
     this.userService.addUser(addForm.value).subscribe(
@@ -139,7 +154,7 @@ export class TableListComponent implements OnInit,OnDestroy {
         console.error(error);
         addForm.reset();
       }
-    );
+    )};
   }
   public onEditUser(user: User): void {
     //document.getElementById('submit-edit').setAttribute("disabled","disabled");
@@ -230,6 +245,7 @@ export class TableListComponent implements OnInit,OnDestroy {
   public onDeleteUser(userid: number): void {
     document.getElementById('annuler-delete').click();
     this.showLoadingSpinner = true ;
+    console.log(userid)
     this.userService.deleteUser(userid).subscribe(
       (response: void)  => {
         this.showLoadingSpinner = false ;
@@ -285,6 +301,12 @@ export class TableListComponent implements OnInit,OnDestroy {
     button.click();
   }
 
+  ngAfterViewInit(): void {
+    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+    //Add 'implements AfterViewInit' to the class.
+    this.theme.setCurrentTheme();
+
+  }
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
     this.dtTrigger.unsubscribe();

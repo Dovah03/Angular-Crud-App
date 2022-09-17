@@ -1,0 +1,158 @@
+<app-loading *ngIf="this.showLoadingSpinner"></app-loading>
+
+
+<div class="main-content" id="main-content">
+  <div class="row">
+    <div class="col-md-12">
+    <!--  <div *ngIf="role==='ROLE_ADMIN'" class="card"> -->
+        <div class="card">
+        <div class="card-header">
+          <h4 class="card-title"><strong> Table des Devis</strong></h4>
+          <button class="btn btn-primary" (click)="onOpenModal(null, 'add')">Ajouter un nouveau Devis</button>
+          <button class="btn btn-primary" (click)="changeView()">changer la vue</button>
+        </div>
+        <br>
+        <div class="card-body"  [hidden]="!this.showtable">
+          <div class="table-hover table-responsive">
+            <table class="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+              <thead class=" text-primary" *ngIf="this.showtableheader">
+                <tr>
+                <th>
+                  Num Offre
+                </th>
+                <th>
+                  Num Article
+                </th>
+                <th>
+                  Description
+                </th>
+                <th>
+                  Quantité
+                </th>
+                <th>
+                  Prix unitaire HT
+                </th>
+                <th>
+                  Prix total HT
+                </th>
+                <th>
+                  date de création
+                </th>
+                <th>
+                  date de dernière modification
+                </th>
+                <th class="text-center">
+                  Actions
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr [ngClass]="{'dark': isDark,'light':!isDark}" *ngFor="let devi of devis">
+                  <td >
+                    {{devi.numOffre}}
+                  </td>
+                  <td>
+                    {{devi.num_Article}}
+                  </td>
+                  <td>
+                    {{devi.description}}
+                  </td>
+                  <td>
+                    {{devi.qty}}
+                  </td>
+                  <td>
+                    {{devi.p_U_HT}}
+                  </td>
+                  <td>
+                    {{devi.p_T_HT}}
+                  </td>
+                  <td>
+                    {{devi.date}}
+                  </td>
+                  <td>
+                    {{devi.datemodif}}
+                  </td>
+                  <td>
+                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                      <a class="btn btn-primary tooltips" data-original-title="Delete" (click)="onSelect(devi)"><i class="fa fa-delete" aria-hidden="true"></i>Details</a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+    <br><br><br>
+  </div>
+  </div>
+  <div class="main-content" id="main-content" [hidden]="this.showtable">
+    <div class="row">
+      <div *ngFor="let devis of devis" class="col-md-4">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-body all-icons">
+              <div class="row">
+            <div class="font-icon-list col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xs-12">
+              <a [routerLink]="[ '/devis-table',devis.numOffre]"><div class="font-icon-detail">
+                <h6>Devis de Numero : {{devis.numOffre}} <br> <br></h6>
+                <h6>Desc : {{devis.Desc}}</h6>
+                <h6>Quantité : {{devis.qty}}</h6>
+                <h6>Prix Total : {{devis.p_T_HT}}</h6>
+
+              </div></a>
+            </div>
+          </div>
+          <div class="card-body">
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  </div>
+</div>
+
+  <!-- add-User-Modal -->
+<div class="modal fade" id="addUserModal" data-bs-backdrop="static" data-bs-keyboard="true" role="dialog"  tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ajouter un Nouveau Devis</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form #addForm = "ngForm" (ngSubmit)="onAddDevis(addForm)">
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="numOffre" class="field-Label">Num Offre</label>
+            <input type="number" ngModel name="numOffre" class="form-control" id="numOffre" placeholder="Num_Offre" required>
+          </div>
+          <div class="form-group">
+            <label for="num_Article" class="field-Label">Num Article</label>
+            <input type="text" ngModel name="num_Article" class="form-control" id="num_Article" placeholder="Num_Article" required>
+          </div>
+          <div class="form-group" class="field-Label">
+            <label for="qty">Quantité</label>
+            <input type="number" ngModel name="qty" class="form-control" id="qty" placeholder="Qty" required>
+          </div>
+          <div class="form-group">
+            <label for="p_U_HT" class="field-Label">Prix Unitaire</label>
+            <input type="number" ngModel name="p_U_HT" class="form-control" id="p_U_HT" placeholder="P_U_HT" required>
+          </div>
+          <div class="form-group">
+            <label for="p_T_HT" class="field-Label">Prix Total</label>
+            <input type="number" ngModel name="p_T_HT" class="form-control" id="p_T_HT" placeholder="P_T_HT" required>
+          </div>
+          <div class="form-group">
+            <label for="description" class="field-Label">Description</label>
+            <input type="text" ngModel name="description" class="form-control" id="description" placeholder="description" required>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="annuler-add" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Ajouter</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>

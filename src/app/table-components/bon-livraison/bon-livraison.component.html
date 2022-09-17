@@ -1,0 +1,167 @@
+<app-loading *ngIf="this.showLoadingSpinner"></app-loading>
+
+
+<div class="main-content" id="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <a *ngIf="this.role==='ROLE_ADMIN' || this.role==='ROLE_MODERATOR'" style="font-size: large;" class="font-icon-detail" [routerLink]="['/BL']" ><strong><i class="now-ui-icons arrows-1_minimal-left"></i> Retourner a la list</strong></a>
+          <a style="font-size: large;" class="font-icon-detail" *ngIf="this.role==='ROLE_USER'" [routerLink]="['/Client-BL']" ><strong><i class="now-ui-icons arrows-1_minimal-left"></i> Retourner a la list</strong></a>          <div style="float : right" class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            <div class="btn-group" role="group">
+              <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <li><a class="dropdown-item" (click)="onPDF()">Convertir en PDF</a>
+                </li>
+                <li><a class="dropdown-item" (click)="exportToExcel()">Convertir en EXCEL</a></li>
+                <li><a *ngIf="this.role==='ROLE_ADMIN' || this.role==='ROLE_MODERATOR'" class="dropdown-item" (click)="onOpenModal('mail')">Envoyer un Email</a></li>
+
+              </ul>
+              <button *ngIf="this.role==='ROLE_ADMIN' || this.role==='ROLE_MODERATOR'" class="btn btn-primary"  (click)="onOpenModal('edit')">Modifier</button>
+            <button *ngIf="this.role==='ROLE_ADMIN' || this.role==='ROLE_MODERATOR'" class="btn btn-danger"  (click)="onOpenModal('delete')">Supprimer</button>
+            </div>
+            </div>
+
+          <br><br><br><br>
+        <div class="card-margin">
+          <h5 class="details-title">Details du Bon de Livraison de Numéro : {{bl?.numoffre}} </h5>
+          <h5 class="details-title" >de Date : {{bl?.date}} </h5>
+          <br><br>
+          <form >
+            <div class="row">
+              <div class="col-md-4 pr-1">
+                <h5 class="details"><strong>Num Article :</strong>  {{bl?.ref}}</h5>
+              </div>
+              <div class="col-md-4 pr-1">
+                <h5 class="details"><strong>PO :</strong> {{bl?.po}}</h5>
+              </div>
+              <div class="col-md-4 pr-1">
+                <h5 class="details"><strong>Quantité :</strong> {{bl?.qty}}</h5>
+              </div>
+              <br>
+              <div class="col-md-6 pr-1">
+                <h5 class="details"><strong>Item :</strong> {{bl?.item}}</h5>
+              </div>
+              <div class="col-md-6 pr-1">
+                <h5 class="details"><strong>Désignation :</strong> {{bl?.desi}} </h5>
+              </div>
+            </div>
+
+          </form>
+      </div>
+    </div>
+      <br>
+    </div>
+
+<!-- Edit-User-Modal -->
+<div class="modal fade" id="editBLModal" data-bs-backdrop="static" data-bs-keyboard="true" role="dialog"  tabindex="-1" aria-labelledby="EditBLModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modifier le Bon de Livraison</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #editForm="ngForm">
+          <div class="form-group">
+            <label for="numoffre" class="field-Label">Num Offre</label>
+            <input type="number" ngModel = "{{bl?.numoffre}}" name="numoffre" class="form-control" id="firstname-edit" placeholder="Num Offre" required>
+          </div>
+          <div class="form-group">
+            <label for="ref" class="field-Label">Num Article</label>
+            <input type="text" ngModel = "{{bl?.ref}}" name="ref" class="form-control" id="lastname-edit" placeholder="Num Article" required>
+          </div>
+          <div class="form-group">
+            <label for="po" class="field-Label">PO</label>
+            <input type="text" ngModel = "{{bl?.po}}" name="po" class="form-control" id="username-edit" placeholder="PO" required>
+          </div>
+          <div class="form-group">
+            <label for="item" class="field-Label">Item</label>
+            <input type="text" ngModel = "{{bl?.item}}" name="item" class="form-control" id="username-edit" placeholder="Item" required>
+          </div>
+          <div class="form-group">
+            <label for="qty" class="field-Label">Quantité</label>
+            <input type="number" ngModel = "{{bl?.qty}}" name="qty" class="form-control" id="username-edit" placeholder="Quantité" required>
+          </div>
+          <div class="form-group">
+            <label for="item" class="field-Label">Item</label>
+            <input type="text" ngModel = "{{bl?.item}}" name="item" class="form-control" id="email-edit" placeholder="Item" required>
+          </div>
+          <div class="form-group">
+            <label for="desi" class="field-Label">Designation</label>
+            <input type="text" ngModel = "{{bl?.desi}}" name="desi" class="form-control" id="email-edit" placeholder="Designation" required>
+          </div>
+          <div class="form-group">
+            <label for="date">Designation</label>
+            <input type="hidden" ngModel = "{{bl?.date}}" name="date" class="form-control" id="email-edit" placeholder="date" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="annuler-edit" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" id="submit-edit" class="btn btn-primary" (click)="onEdit(editForm.value)">Modifier</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- delete-devis-Modal -->
+<div class="modal fade" id="deleteBLModal" role="dialog"  tabindex="-1" aria-labelledby="DeleteBLModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Alerte : Suppression de Bon de Livraison</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>êtes-vous sûr de vouloir Supprimer ce Bon de livraison</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="annuler-delete" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" id="submit-delete" class="btn btn-danger" (click)="onDelete()">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- sendMail-Modal -->
+<div class="modal fade" id="sendMailModal" data-bs-backdrop="static" data-bs-keyboard="true" role="dialog"  tabindex="-1" aria-labelledby="sendMailModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Formulaire Email</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="user" [formGroup]="this.EmailForm" (ngSubmit)="SendMail()">
+          <div class="form-group">
+            <label for="to">Email Destination</label>
+            <input type="text" name="to" formControlName="to" class="form-control" id="to-edit" placeholder="Email Destination" required>
+          </div>
+          <div class="form-group">
+            <label for="subject">Sujet</label>
+            <input type="text"  name="subject" formControlName="subject" class="form-control" id="subject-edit" placeholder="Sujet" required>
+          </div>
+          <div class="form-group">
+            <label for="text">Contenue</label>
+            <textarea rows="4" cols="80" type="text" name="text" formControlName="text" class="form-control" id="text-edit" placeholder="Contenue" required></textarea>
+          </div>
+          <div><strong>Piece Jointe</strong></div>
+          <div *ngIf="this.filestatus.status==='progress'">
+            <div class="progress">
+              <div [style.width.%]="filestatus.percent" class="progress-bar progress-bar-animated bg-info" role="progressbar" aria-valuenow="">
+                {{filestatus.requestType}}... {{filestatus.percent}}
+              </div>
+
+            </div>
+          </div>
+          <input type="file" accept="*" class="form-control"  (change) = "onUploadFiles($event.target.files)" multiple>
+      <div class="modal-footer">
+        <button type="button" id="annuler-mail" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="submit" id="submit-mail" class="btn btn-primary" >envoyer</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+

@@ -1,17 +1,16 @@
 
-<div class="panel-header panel-header-sm">
-</div>
+
 <div class="main-content" id="main-content">
   <div class="row">
-    <div class="col-md-4">
-      <div *ngIf="this.role==='ROLE_ADMIN'" class="card">
+    <div *ngIf="this.role==='ROLE_ADMIN'" class="col-md-4">
+      <div class="card">
         <div class="card-header">
           <div class="card-body all-icons">
             <div class="row">
           <div class="font-icon-list col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xs-12">
             <a [routerLink]="[ '/table-list']"><div class="font-icon-detail">
               <i class="now-ui-icons users_circle-08"></i><br><br>
-              <h6>Table Users</h6>
+              <h6>Utilisateurs<br> <br></h6>
             </div></a>
           </div>
         </div>
@@ -21,6 +20,114 @@
   </div>
   </div>
 </div>
+    <div *ngIf="this.show && this.role==='ROLE_MODERATOR'"  class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-body all-icons">
+            <div class="row">
+          <div class="font-icon-list col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xs-12">
+            <a [routerLink]="[ '/devis-table']"><div class="font-icon-detail">
+              <i class="now-ui-icons files_single-copy-04"></i><br><br>
+              <h6>Devis <br><br></h6>
+            </div></a>
+          </div>
+        </div>
+        <div class="card-body">
+      </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div *ngIf="this.show &&  this.role==='ROLE_MODERATOR'" class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-body all-icons">
+            <div class="row">
+          <div class="font-icon-list col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xs-12">
+            <a [routerLink]="[ '/BC']"><div class="font-icon-detail">
+              <i class="now-ui-icons education_paper"></i><br><br>
+              <h6>Bons <br> de Commande</h6>
+            </div></a>
+          </div>
+        </div>
+        <div class="card-body">
+      </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div *ngIf="this.show && this.role==='ROLE_MODERATOR'" class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-body all-icons">
+            <div class="row">
+          <div class="font-icon-list col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xs-12">
+            <a [routerLink]="[ '/BL']"><div class="font-icon-detail">
+              <i class="now-ui-icons shopping_delivery-fast"></i><br><br>
+              <h6>Bons <br> de Livraison</h6>
+            </div></a>
+          </div>
+        </div>
+        <div class="card-body">
+      </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div *ngIf="this.show && this.role==='ROLE_USER'" class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-body all-icons">
+            <div class="row">
+          <div class="font-icon-list col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xs-12">
+            <a [routerLink]="[ '/Client-devis']"><div class="font-icon-detail">
+              <i class="now-ui-icons files_single-copy-04"></i><br><br>
+              <h6>Mes Devis</h6>
+            </div></a>
+          </div>
+        </div>
+        <div class="card-body">
+      </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div *ngIf="this.show && this.role==='ROLE_USER'" class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-body all-icons">
+            <div class="row">
+          <div class="font-icon-list col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xs-12">
+            <a [routerLink]="[ '/Client-BC']"><div class="font-icon-detail">
+              <i class="now-ui-icons education_paper"></i><br><br>
+              <h6>Mes Bons <br> de Commande</h6>
+            </div></a>
+          </div>
+        </div>
+        <div class="card-body">
+      </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div *ngIf="this.show && this.role==='ROLE_USER'" class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-body all-icons">
+            <div class="row">
+          <div class="font-icon-list col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xs-12">
+            <a [routerLink]="[ '/Client-BL']"><div class="font-icon-detail">
+              <i class="now-ui-icons shopping_delivery-fast"></i><br><br>
+              <h6>Mes Bons <br> de Livraison</h6>
+            </div></a>
+          </div>
+        </div>
+        <div class="card-body">
+      </div>
+    </div>
+    </div>
+    </div>
+    </div>
 </div>
 </div>
 
