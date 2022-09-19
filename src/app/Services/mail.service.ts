@@ -2,7 +2,10 @@ import { HttpClient, HttpErrorResponse, HttpEvent } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
-import { environment } from "../../environments/environment";
+//for local Env
+//import { environment } from "../environments/environment";
+//for prod Env
+import { environment } from "../../environments/environment.prod";
 import { mail } from "../model/mail";
 
 @Injectable({

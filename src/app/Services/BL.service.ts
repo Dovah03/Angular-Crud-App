@@ -1,7 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { environment } from "../../environments/environment";
+//for local Env
+//import { environment } from "../environments/environment";
+//for prod Env
+import { environment } from "../../environments/environment.prod";
 import { BL } from "../model/BL";
 
 @Injectable({
