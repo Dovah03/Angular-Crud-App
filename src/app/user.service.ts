@@ -3,11 +3,11 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { BehaviorSubject, Observable, ReplaySubject } from "rxjs";
 import { User } from "./user";
 //for local Env
-//import { environment } from "../environments/environment";
+import { environment } from "../environments/environment";
 //for prod Env
 
 
-import { environment } from "../environments/environment.prod";
+//import { environment } from "../environments/environment.prod";
 import { catchError, map, shareReplay, tap } from "rxjs/operators";
 import { throwError } from "rxjs";
 import { AuthService } from "./login/services/auth.service";

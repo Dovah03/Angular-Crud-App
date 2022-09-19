@@ -3,9 +3,9 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Devis } from "../../model/devis";
 //for local Env
-//import { environment } from "../environments/environment";
+import { environment } from "../../../environments/environment";
 //for prod Env
-import { environment } from "../../../environments/environment.prod";
+//import { environment } from "../../../environments/environment.prod";
 
 @Injectable({
   providedIn: 'root'

@@ -3,9 +3,9 @@ import { Injectable } from "@angular/core";
 import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
 //for local Env
-//import { environment } from "../environments/environment";
+import { environment } from "../../environments/environment";
 //for prod Env
-import { environment } from "../../environments/environment.prod";
+//import { environment } from "../../environments/environment.prod";
 import { mail } from "../model/mail";
 
 @Injectable({
