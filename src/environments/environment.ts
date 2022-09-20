@@ -5,7 +5,7 @@
 
 export const environment = {
   production: true,
-  ApiUrl: 'http://localhost:6060'
+  ApiUrl: 'http://localhost:8080'
   //ApiUrl: 'http://196.72.92.183:6060' // modem ipadress
   //ApiUrl: 'http://192.168.1.57:6060'
 
