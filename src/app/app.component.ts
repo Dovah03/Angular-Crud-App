@@ -14,7 +14,7 @@ import { UserService } from './user.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit,OnDestroy{
-  title = 'AdminManagerFEApp';
+  title = 'Angular-Crud-App-Demo';
   private users!: User[];
   private loggedinUser!: User;
   private currentUserSub:Subscription;
