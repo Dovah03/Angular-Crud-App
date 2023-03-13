@@ -124,7 +124,9 @@ export class UserService {
         })
       );
   }
-
+  public getusers(): Observable<any> {
+    return this.http.post<Client>(`${this.ApiServerUrl}/user/api/clients`, this.user);
+  }
   public getUsers(): Observable<any> {
     return this.http.get<User[]>(`${this.ApiServerUrl}/user/all`);
   }

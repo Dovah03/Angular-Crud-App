@@ -36,7 +36,6 @@ export class DevisDetailsComponent implements OnInit,AfterViewChecked {
   userPrincipalSub: Subscription;
   role:string;
 
-
   constructor(private userService:UserService,private route:ActivatedRoute, private router:Router, private devisService:DevisService,
     private toastr: ToastrService, public ete: ExportExcelService, private theme:themeService,
     private fb:FormBuilder, private Error: ErrorService, private mail:MailService) {}
@@ -52,7 +51,6 @@ export class DevisDetailsComponent implements OnInit,AfterViewChecked {
       'filenames' : [this.filenames, Validators.required]
     });
     this.theme.setCurrentTheme();
-
     this.id =+ this.route.snapshot.params['id'];
     this.devisService.getDevisById(this.id).subscribe((response : Devis)  => {
       this.devis = response;
@@ -61,6 +59,7 @@ export class DevisDetailsComponent implements OnInit,AfterViewChecked {
       console.log(this.dataForExcel)
     })
   };
+
   public onOpenModal(mode:string): void{
     const container = document.getElementById('main-content');
     const button = document.createElement('button');
@@ -96,7 +95,6 @@ export class DevisDetailsComponent implements OnInit,AfterViewChecked {
         console.log(response);
 
           this.router.navigate(['/devis-table/']);
-
     },
       (error: HttpErrorResponse) => {
         if(error.status == 400){
@@ -118,10 +116,10 @@ export class DevisDetailsComponent implements OnInit,AfterViewChecked {
           });
         }
         console.error(error);
-
       }
     );
   }
+
   public onDelete(): void {
     document.getElementById('annuler-delete').click();
     this.showLoadingSpinner = true ;
@@ -146,17 +144,15 @@ export class DevisDetailsComponent implements OnInit,AfterViewChecked {
           positionClass: 'toast-' + 'top' + '-' +  'right'
           });
         console.error(error);
-
       }
     );
   }
+
   exportToExcel() {
     let reportData = {
       title: 'Devis_Isoqualtech',
       devis: this.dataForExcel[0]
-
     }
-
     this.ete.excelDevisExport(reportData);
   }
 
@@ -296,7 +292,6 @@ export class DevisDetailsComponent implements OnInit,AfterViewChecked {
     this.theme.setCurrentTheme();
     this.isDark = this.theme.getCurrentTheme();
   }
-
 
   ngAfterViewChecked(): void {
     //Called after every check of the component's view. Applies to components only.
